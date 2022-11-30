@@ -46,7 +46,7 @@ loop1:
       endif2:
    endif1:
 
-   if (!iChar == '\n') goto endif3; 
+   if (iChar != '\n') goto endif3; 
       lLineCount++;
    endif3:
 

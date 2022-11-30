@@ -35,13 +35,30 @@ loop1:
 
    // if (!isspace(iChar)) goto else1;
    mov x0, x1
-      if (!iInWord) goto endif1;
-         lWordCount++;
-         iInWord = FALSE;
-      goto endif1;
+   bl isspace
+   cmp x0, FALSE
+   beq else1
 
-   else1:
-      if (iInWord) goto endif2;
+   // if (!iInWord) goto endif1;
+   adr x0, iInWord
+   ldr x0, [x0]
+   cmp x0, FALSE
+   beq endif1
+
+   // lWordCount++;
+   adr x2, lWordCount
+   ldr x2, [x2]
+   add x2, x2, 1
+
+   // iInWord = FALSE;
+   mov x0, FALSE
+
+   // goto endif1;
+   b endif1
+
+else1:
+   // if (iInWord) goto endif2;
+   
          iInWord = TRUE;
       endif2:
    endif1:

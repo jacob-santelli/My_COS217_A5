@@ -1,9 +1,6 @@
-   // enum {FALSE, TRUE};
-   .equ FALSE, 0
-   .equ TRUE, 1
-
-   .equ EOF, -1
-
+   .section .rodata
+printfFormatStr: .string "%7ld %7ld %7ld\n"
+   
    .section .data
 // static long lLineCount = 0;
 lLineCount: .quad 0
@@ -18,9 +15,19 @@ iINWord: .word FALSE
 // static int iChar;
 iChar: .skip 4
 
+   .section .text
+
+   // enum {FALSE, TRUE};
+   .equ FALSE, 0
+   .equ TRUE, 1
+
+   .equ EOF, -1
+
    .global main
 main:
+
 loop1:
+
    // if ((iChar = getchar()) == EOF) goto endloop1;
    bl getchar
    adr x1, iChar
@@ -58,6 +65,7 @@ loop1:
    b endif1
 
 else1:
+
    // if (iInWord) goto endif2;
    adr x0, iInWord
    cmp [x0], TRUE
@@ -68,6 +76,7 @@ else1:
    str [x1], x0
 
 endif2:
+
 endif1:
 
    // if (iChar != '\n') goto endif3; 
@@ -87,11 +96,29 @@ endif3:
 
 endloop1:
 
-if (!iInWord) goto endif4;
-   lWordCount++;
+   // if (!iInWord) goto endif4;
+   adr x0, iInWord
+   ldr x0, [x0]
+   cmp x0, FALSE
+   beq endif4
+
+   // lWordCount++;
+   adr x0, lWordCount
+   add [x0], [x0], 1
+
 endif4:
 
-printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
-return 0;
+   // printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
+   adr x0, printfFormatStr
+   adr x1, lLineCount
+   ldr x1, [x1]
+   adr x2, lWordCount
+   ldr x2, [x2]
+   adr x3, lCharCount
+   ldr x3, [x3]
+   bl printf
+
+// return 0;
+ret
 
 

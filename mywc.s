@@ -1,6 +1,7 @@
    // enum {FALSE, TRUE};
    .equ FALSE, 0
    .equ TRUE, 1
+
    .equ EOF, -1
 
    .section .data
@@ -78,7 +79,8 @@ else1:
    // endif3:
    endif3:
 
-   goto loop1;
+   // goto loop1;
+   b loop1
 endloop1:
 
 

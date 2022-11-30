@@ -1,6 +1,7 @@
    // enum {FALSE, TRUE};
    .equ FALSE, 0
    .equ TRUE, 1
+
    .equ EOF, -1
 
    .section .data
@@ -56,7 +57,7 @@ loop1:
 
 else1:
    // if (iInWord) goto endif2;
-   adr x0, iINWord
+   adr x0, iInWord
    cmp [x0], TRUE
    beq endif2
       // iInWord = TRUE;
@@ -78,7 +79,8 @@ else1:
    // endif3:
    endif3:
 
-   goto loop1;
+   // goto loop1;
+   b loop1
 endloop1:
 
 

@@ -24,7 +24,8 @@ loop1:
    bl getchar
    adr x1, iChar
    str w0, [x1]
-   cmp [x1], EOF
+   ldr x1, [x1]
+   cmp x1, EOF
    beq endloop1
 
    // lCharCount++;
@@ -48,10 +49,11 @@ loop1:
    //    lLineCount++;
    // endif3:
    adr x0, iChar
-   str w0, [x0]
-
-   
-
+   ldr x0, [x0]
+   cmp x0, '\n'
+   bne endif3
+   adr x1, lLineCount;
+   add [x1], [x1], 1
    endif3:
 
    goto loop1;

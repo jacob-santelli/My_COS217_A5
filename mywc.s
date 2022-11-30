@@ -9,7 +9,7 @@ lWordCount: .quad 0
 // static long lCharCount = 0;
 lCharCount: .quad 0
 // static int iInWord = FALSE;
-iINWord: .word FALSE
+iInWord: .word FALSE
 
    .section .bss
 // static int iChar;
@@ -51,8 +51,8 @@ loop1:
 
    // if (!iInWord) goto endif1;
    adr x0, iInWord
-   ldr x0, [x0]
-   cmp x0, FALSE
+   ldr w0, [x0]
+   cmp w0, FALSE
    beq endif1
 
    // lWordCount++;
@@ -74,8 +74,8 @@ else1:
 
    // if (iInWord) goto endif2;
    adr x0, iInWord
-   ldr x0, [x0]
-   cmp x0, TRUE
+   ldr w0, [x0]
+   cmp w0, TRUE
    beq endif2
 
    // iInWord = TRUE;
@@ -109,8 +109,8 @@ endloop1:
 
    // if (!iInWord) goto endif4;
    adr x0, iInWord
-   ldr x0, [x0]
-   cmp x0, FALSE
+   ldr w0, [x0]
+   cmp w0, FALSE
    beq endif4
 
    // lWordCount++;

@@ -63,13 +63,18 @@ else1:
       endif2:
    endif1:
 
-   if (iChar != '\n') goto endif3; 
-      lLineCount++;
+   // if (iChar != '\n') goto endif3; 
+   //    lLineCount++;
+   // endif3:
+   adr x0, iChar
+   ldr x0, [x0]
+   cmp x0, '\n'
+   bne endif3
+   adr x1, lLineCount;
+   add [x1], [x1], 1
    endif3:
 
-   // goto loop1;
-   b loop1
-
+   goto loop1;
 endloop1:
 
 

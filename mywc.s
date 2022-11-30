@@ -30,8 +30,7 @@ loop1:
 
    // lCharCount++;
    adr x0, lCharCount
-   ldr x0, [x0]
-   add x0, x0, 1
+   add [x0], [x0], 1
 
    // if (!isspace(iChar)) goto else1;
    mov x0, x1
@@ -47,8 +46,7 @@ loop1:
 
    // lWordCount++;
    adr x2, lWordCount
-   ldr x2, [x2]
-   add x2, x2, 1
+   add [x2], [x2], 1
 
    // iInWord = FALSE;
    mov x0, FALSE
@@ -64,14 +62,15 @@ else1:
    endif1:
 
    // if (iChar != '\n') goto endif3; 
-   //    lLineCount++;
-   // endif3:
    adr x0, iChar
    ldr x0, [x0]
    cmp x0, '\n'
    bne endif3
+
+   // lLineCount++;
    adr x1, lLineCount;
    add [x1], [x1], 1
+
    endif3:
 
    goto loop1;

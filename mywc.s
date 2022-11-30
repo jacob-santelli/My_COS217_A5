@@ -24,8 +24,7 @@ loop1:
    bl getchar
    adr x1, iChar
    str w0, [x1]
-   ldr x1, [x1]
-   cmp x1, EOF
+   cmp [x1], EOF
    beq endloop1
 
    // lCharCount++;
@@ -33,8 +32,7 @@ loop1:
    ldr x0, [x0]
    add x0, x0, 1
 
-   // if (!isspace(iChar)) goto else1;
-   mov x0, x1
+   if (!isspace(iChar)) goto else1;
       if (!iInWord) goto endif1;
          lWordCount++;
          iInWord = FALSE;
@@ -46,13 +44,17 @@ loop1:
       endif2:
    endif1:
 
-   if (iChar != '\n') goto endif3; 
-      lLineCount++;
+   // if (iChar != '\n') goto endif3; 
+   //    lLineCount++;
+   // endif3:
+   adr x0, iChar
+   str w0, [x0]
+
+   
+
    endif3:
 
-   // goto loop1;
-   b loop1
-
+   goto loop1;
 endloop1:
 
 

@@ -34,7 +34,8 @@ loop1:
    add [x0], [x0], 1
 
    // if (!isspace(iChar)) goto else1;
-   mov x0, x1
+   adr x0, iChar
+   ldr x0, [x0]
    bl isspace
    cmp x0, FALSE
    beq else1
@@ -46,11 +47,12 @@ loop1:
    beq endif1
 
    // lWordCount++;
-   adr x2, lWordCount
-   add [x2], [x2], 1
+   adr x0, lWordCount
+   add [x0], [x0], 1
 
    // iInWord = FALSE;
-   mov x0, FALSE
+   adr x0, iInWord
+   str FALSE, [x0]
 
    // goto endif1;
    b endif1
@@ -60,11 +62,13 @@ else1:
    adr x0, iInWord
    cmp [x0], TRUE
    beq endif2
-      // iInWord = TRUE;
-      adr x1, TRUE
-      str [x1], x0
-      endif2:
-   endif1:
+
+   // iInWord = TRUE;
+   adr x1, TRUE
+   str [x1], x0
+
+endif2:
+endif1:
 
    // if (iChar != '\n') goto endif3; 
    adr x0, iChar
@@ -76,11 +80,18 @@ else1:
    adr x1, lLineCount;
    add [x1], [x1], 1
 
-   // endif3:
-   endif3:
+endif3:
 
    // goto loop1;
    b loop1
+
 endloop1:
+
+if (!iInWord) goto endif4;
+   lWordCount++;
+endif4:
+
+printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
+return 0;
 
 

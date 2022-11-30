@@ -1,3 +1,4 @@
+   // enum {FALSE, TRUE};
    .equ FALSE, 0
    .equ TRUE, 1
 

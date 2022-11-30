@@ -56,8 +56,12 @@ loop1:
 
 else1:
    // if (iInWord) goto endif2;
-   
-         iInWord = TRUE;
+   adr x0, iINWord
+   cmp [x0], TRUE
+   beq endif2
+      // iInWord = TRUE;
+      adr x1, TRUE
+      str [x1], x0
       endif2:
    endif1:
 
@@ -71,6 +75,7 @@ else1:
    adr x1, lLineCount;
    add [x1], [x1], 1
 
+   // endif3:
    endif3:
 
    goto loop1;

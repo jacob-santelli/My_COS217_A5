@@ -57,7 +57,7 @@ loop1:
 
 else1:
    // if (iInWord) goto endif2;
-   adr x0, iINWord
+   adr x0, iInWord
    cmp [x0], TRUE
    beq endif2
       // iInWord = TRUE;

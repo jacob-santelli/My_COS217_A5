@@ -25,8 +25,7 @@ loop1:
    bl getchar
    adr x1, iChar
    str w0, [x1]
-   ldr x1, [x1]
-   cmp x1, EOF
+   cmp [x1], EOF
    beq endloop1
 
    // lCharCount++;
@@ -52,7 +51,8 @@ loop1:
 
    // iInWord = FALSE;
    adr x0, iInWord
-   str FALSE, [x0]
+   adr x1, FALSE
+   str [x1], [x0]
 
    // goto endif1;
    b endif1

@@ -44,11 +44,13 @@ loop1:
       endif2:
    endif1:
 
-   if (!iChar == '\n') goto endif3; 
+   if (iChar != '\n') goto endif3; 
       lLineCount++;
    endif3:
 
-   goto loop1;
+   // goto loop1;
+   b loop1
+
 endloop1:
 
 

@@ -17,6 +17,8 @@ iChar: .skip 4
 
    .section .text
 
+   .equ    MAIN_STACK_BYTECOUNT, 16
+
    // enum {FALSE, TRUE};
    .equ FALSE, 0
    .equ TRUE, 1
@@ -26,14 +28,17 @@ iChar: .skip 4
    .global main
 main:
 
+// prolog
+sub sp, sp, MAIN_STACK_BYTECOUNT
+str x30, [sp]
+
 loop1:
 
    // if ((iChar = getchar()) == EOF) goto endloop1;
    bl getchar
    adr x1, iChar
    str w0, [x1]
-   ldr x1, [x1]
-   cmp x1, EOF
+   cmp w0, EOF
    beq endloop1
 
    // lCharCount++;
@@ -44,9 +49,9 @@ loop1:
 
    // if (!isspace(iChar)) goto else1;
    adr x0, iChar
-   ldr x0, [x0]
+   ldr w0, [x0]
    bl isspace
-   cmp x0, FALSE
+   cmp w0, FALSE
    beq else1
 
    // if (!iInWord) goto endif1;
@@ -63,9 +68,8 @@ loop1:
 
    // iInWord = FALSE;
    adr x0, iInWord
-   adr x1, FALSE
-   ldr x1, [x1]
-   str x1, [x0]
+   mov w1, FALSE
+   str w1, [x0]
 
    // goto endif1;
    b endif1
@@ -80,9 +84,8 @@ else1:
 
    // iInWord = TRUE;
    adr x0, iInWord
-   adr x1, TRUE
-   ldr x1, [x1]
-   str x1, [x0]
+   mov w1, TRUE
+   str w1, [x0]
 
 endif2:
 
@@ -131,7 +134,11 @@ endif4:
    ldr x3, [x3]
    bl printf
 
-// return 0;
+// epilog
+mov w0, 0
+ldr x30, [sp]
+add sp, sp, MAIN_STACK_BYTECOUNT
 ret
+.size main, (. - main)
 
 

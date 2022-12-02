@@ -78,7 +78,10 @@ particular, what bugs are in your submission?
 ------------------------------------------------------------------------
 What is your mywc program test plan?
 
-
+mywcStatement1.txt: contains 'a', followed by a space, then a newline 
+character. 'a' tests lines 0-34, 42-48, and 50-57. The space tests lines 
+0-41, 48, and 50-57. The newline tests lines 0-34 and 42-57. Together, 
+this successfully tests every single line in the program at least once.
 
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,

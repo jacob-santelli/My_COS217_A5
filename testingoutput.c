@@ -3,7 +3,8 @@
 int main()
 {
    int i;
-    char *filename = "mywcBoundary5.txt";
+   int j;
+    char *filename = "mywcStress2.txt";
 
 
     FILE *fp = fopen(filename, "w");
@@ -13,8 +14,11 @@ int main()
         return -1;
     }
 
-    for (i = 32; i < 127; i++) {
-        fputc(i, fp);
+    for (i = 0; i < 50000; i++) {
+        j = rand() % 127;
+        if ((j == 9) || (j == 10) || ((j >= 32) && (j <= 126)))
+            fputc(j, fp);
+        else i--;
     }
 
 

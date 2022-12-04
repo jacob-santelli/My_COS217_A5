@@ -141,49 +141,47 @@ BigInt_add:
    startfor1:
       // ulSum = ulCarry;
       ldr x0, [sp, ULCARRY]
-      ldr [sp, ULSUM], x0
+      str x0, [sp, ULSUM]
       // ulCarry = 0
       mov x0, 0
-      ldr [sp, ULCARRY], x0
+      str x0, [sp, ULCARRY]
 
       // ulSum += oAddend1->aulDigits[lIndex];
       ldr x0, [sp, OADDEND1]
-      add x1, AULDIGIT, LINDEX
-      ldr x0, [x0, x1]
+      ldr x0, [x0, AULDIGIT + LINDEX]
 
       // adding to ulSum
-      add x0, x0, [sp, ULSUM]
-      ldr [sp, ULSUM], x0
+      ldr x1, [sp, ULSUM]
+      add x0, x0, x1
+      str x0, [sp, ULSUM]
 
       /* Check for overflow. */
       // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
       ldr x0, [sp, ULSUM]
       ldr x1, [sp, OADDEND1]
-      add x2, AULDIGIT, LINDEX
-      ldr x1, [x1, x2]
+      ldr x1, [x1, AULDIGIT + LINDEX]
       cmp x0, x1
       bgt endif2
 
          // ulCarry = 1;
          mov x0, 1
-         ldr [sp, ULCARRY], x0
+         str x0, [sp, ULCARRY]
       
       endif2:
 
       // ulSum += oAddend2->aulDigits[lIndex];
       ldr x0, [sp, OADDEND2]
-      add x1, AULDIGIT, LINDEX
-      ldr x0, [x0, x1]
+      ldr x0, [x0, AULDIGIT + LINDEX]
 
       // adding to ulSum
-      add x0, x0, [sp, ULSUM]
-      ldr [sp, ULSUM], x0
+      ldr x1, [sp, ULSUM]
+      add x0, x0, x1
+      str x0, [sp, ULSUM]
 
     // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
    ldr x0, [sp, ULSUM]
    ldr x1, [sp, OADDEND2]
-   add x2, AULDIGIT, LINDEX
-   ldr x1, [x1, x2]
+   ldr x1, [x1, AULDIGIT + LINDEX]
    cmp x0, x1
    // bge might be wrong bcond
    bge endif3
@@ -196,8 +194,7 @@ BigInt_add:
 endif3:
    // oSum->aulDigits[lIndex] = ulSum;
    ldr x0, [sp, OSUM]
-   add x1, AULDIGIT, LSUMLENGTH
-   add x0, x0, x1
+   add x0, x0, AULDIGIT + LSUMLENGTH
    ldr x1, [sp, ULSUM]
    str x1, [x0]
 
@@ -218,7 +215,7 @@ endfor1:
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
    str x0, [sp, LSUMLENGTH]
-   str x1, MAX_DIGITS
+   mov x1, MAX_DIGITS
    cmp x0, x1
    bne endif5
 
@@ -250,4 +247,4 @@ endif4:
    mov x0, TRUE
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
-   ret 
+   ret

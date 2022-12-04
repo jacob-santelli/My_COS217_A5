@@ -93,7 +93,7 @@ BigInt_add:
     // unsigned long ulCarry;
     // unsigned long ulSum;
     // long lIndex;
-    // long lSumLength;
+    // long lSumLength; 
 
 main:
 

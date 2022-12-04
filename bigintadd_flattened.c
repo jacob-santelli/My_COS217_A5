@@ -54,17 +54,19 @@ int BigInt_add(BigInt_T oAddend1, BigInt_T oAddend2, BigInt_T oSum)
 
    if (lIndex >= lSumLength) goto endfor1;
       startfor1:
-      
+
       ulSum = ulCarry;
       ulCarry = 0;
 
       ulSum += oAddend1->aulDigits[lIndex];
-      if (ulSum < oAddend1->aulDigits[lIndex]) /* Check for overflow. */
+      if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2; /* Check for overflow. */
          ulCarry = 1;
+      endif2:
 
       ulSum += oAddend2->aulDigits[lIndex];
-      if (ulSum < oAddend2->aulDigits[lIndex]) /* Check for overflow. */
+      if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
          ulCarry = 1;
+      endif3:
 
       oSum->aulDigits[lIndex] = ulSum;
       lIndex++;
@@ -72,13 +74,13 @@ int BigInt_add(BigInt_T oAddend1, BigInt_T oAddend2, BigInt_T oSum)
    endfor1:
 
    /* Check for a carry out of the last "column" of the addition. */
-   if (ulCarry != 1) goto endif2
-      if (lSumLength != MAX_DIGITS) goto endif3
+   if (ulCarry != 1) goto endif4;
+      if (lSumLength != MAX_DIGITS) goto endif5;
          return FALSE;
-      endif3:
+      endif5:
       oSum->aulDigits[lSumLength] = 1;
       lSumLength++;
-   endif2:
+   endif4:
 
    /* Set the length of the sum. */
    oSum->lLength = lSumLength;

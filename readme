@@ -115,13 +115,16 @@ The space tests lines 30-41, 48, and 50. The newline tests lines 30-34
 and 42-50. The 'b' tests 30-34, 42-44, 46, and 50-57. Together, this 
 successfully tests every single line in the program at least once.
 
+mywcStress1.txt: 50,000 randomly generated characters, sampling every
+single permitted character in the selection. 
+
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,
 2e, and 2f to compute fib(250000) on armlab? Fill in the blanks.
 
-Part 2a:  _____ seconds
+Part 2a:  11.922221 seconds
 
-Part 2b:  _____ seconds
+Part 2b:  2.785485 seconds
 
 Part 2d:  _____ seconds
 

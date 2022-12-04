@@ -105,14 +105,22 @@ BigInt_add:
    cmp x0, x1
    ble endif1
       // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
-      mov w1, 0
+
+      // third thing
       // this may be wrong
       ldr x0, [sp, ULCARRY]
       bl sizeof
+      mov x1, MAX_DIGITS
+      mul x0, x0, x1
       mov x3, x0
+
+      // second thing
+      mov w1, 0
+
+      // first thing
       ldr x0, [sp, OSUM]
       ldr x0, [x0]
-      // need to multiply
+
       bl memset
    endif1:
 

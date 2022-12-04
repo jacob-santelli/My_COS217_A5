@@ -10,14 +10,16 @@
    bne endif5
 
    // epilog, return FALSE;
-   ldr x0, FALSE
+   mov x0, FALSE
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret 
 
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
-   ldr x0, [sp, ]
+   ldr x0, [sp, OSUM]
+   
+
 
 
 

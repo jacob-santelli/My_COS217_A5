@@ -87,6 +87,15 @@ BigInt_add:
    // long lIndex;
    // long lSumLength; 
 
+   /* Determine the larger length. */
+   // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
+   ldr x0, [sp, OADDEND1]
+   ldr x0, [x0]
+   ldr x1, [sp, OADDEND2]
+   ldr x1, [x1]
+   bl BigInt_larger
+   ldr x1, [sp LSUMLENGTH]
+   str x0, [x1]
 
    // return lLarger;
    mov     x0, TRUE

@@ -25,7 +25,15 @@ BigInt_larger:
     str x1, [sp, LLENGTH2]
 
     // long lLarger
-    
+
+    // if (lLength1 <= lLength2) goto else1;
+    ldr x0, [sp, LLENGTH1]
+    ldr x1, [sp, LLENGTH2]
+    cmp x0, x1
+    ble else1
+
+    // lLarger = lLength1;
+
 
 
 

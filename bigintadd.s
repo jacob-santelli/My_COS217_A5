@@ -22,7 +22,7 @@
     .equ ULCARRY, 8
     .equ ULSUM, 16
     .equ LINDEX, 24
-    .equ LSUMLENGTH, 32
+    .equ LSUMLENGTH, 32 
 
     // Parameter stack offsets for BigInt_add:
     .equ OADDEND1, 40

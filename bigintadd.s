@@ -6,9 +6,15 @@
 
    .section .text
 
+   // enum {FALSE, TRUE};
+   .equ FALSE, 0
+   .equ TRUE, 1
+
+   .equ EOF, -1
+
    // Must be a multiple of 16
-   .equ    LARGER_STACK_BYTECOUNT, 32
-   .equ    ADD_STACK_BYTECOUNT, 64
+   .equ LARGER_STACK_BYTECOUNT, 32
+   .equ ADD_STACK_BYTECOUNT, 64
       
    // Local variable stack offsets:
    .equ LLARGER, 8
@@ -28,6 +34,9 @@
    .equ OADDEND1, 40
    .equ OADDEND2, 48
    .equ OSUM, 56
+
+   // BigInt_T offsets
+   .equ AULDIGIT, 8
 
 BigInt_larger:
 
@@ -77,3 +86,12 @@ BigInt_add:
    // unsigned long ulSum;
    // long lIndex;
    // long lSumLength; 
+
+
+   // return lLarger;
+   mov     x0, TRUE
+   ldr     x30, [sp]
+   add     sp, sp, ADD_STACK_BYTECOUNT
+   ret
+
+   .size   BigInt_add, (. - BigInt_add)

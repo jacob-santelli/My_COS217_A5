@@ -16,6 +16,18 @@
     .equ LLENGTH1, 16
     .equ LLENGTH2, 24
 
+
+    // Local variable stack offsets for BigInt_add:
+    .equ ULCARRY, 8
+    .equ ULSUM, 16
+    .equ LINDEX, 24
+    .equ LSUMLENGTH, 32 
+
+    // Parameter stack offsets for BigInt_add:
+    .equ OADDEND1, 40
+    .equ OADDEND2, 48
+    .equ OSUM, 56
+
 BigInt_larger:
 
     // Prolog

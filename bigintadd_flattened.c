@@ -62,6 +62,7 @@ int BigInt_add(BigInt_T oAddend1, BigInt_T oAddend2, BigInt_T oSum)
 
    if (lIndex >= lSumLength) goto endfor1;
       startfor1:
+      
       ulSum = ulCarry;
       ulCarry = 0;
 

@@ -46,6 +46,7 @@ BigInt_larger:
     ble else1
 
     // lLarger = lLength1;
+    lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
 
 
 
@@ -63,6 +64,18 @@ BigInt_larger:
    .global main
 
 BigInt_add:
+    // Prolog
+    sub sp, sp, ADD_STACK_BYTECOUNT
+    str x30, [sp]
+    str x0, [sp, OADDEND1]
+    str x1, [sp, OADDEND2]
+    str x2, [sp, OSUM]
+
+
+    // unsigned long ulCarry;
+    // unsigned long ulSum;
+    // long lIndex;
+    // long lSumLength;
 
 main:
 

@@ -82,7 +82,7 @@ int BigInt_add(BigInt_T oAddend1, BigInt_T oAddend2, BigInt_T oSum)
    endfor1:
 
    /* Check for a carry out of the last "column" of the addition. */
-   if (ulCarry != 1) goto endif4
+   if (ulCarry != 1) goto endif4;
       if (lSumLength != MAX_DIGITS) goto endif5;
          return FALSE;
       endif5:

@@ -6,14 +6,13 @@
 
    .section .text
 
-    // Must be a multiple of 16
+   // Must be a multiple of 16
     .equ    LARGER_STACK_BYTECOUNT, 32
-    .equ    ADD_STACK_BYTECOUNT, 64
         
-    // Local variable stack offsets for BigInt_larger:
+    // Local variable stack offsets:
     .equ LLARGER, 8
 
-    // Parameter stack offsets for BigInt_larger:
+    // Parameter stack offsets:
     .equ LLENGTH1, 16
     .equ LLENGTH2, 24
 
@@ -61,10 +60,6 @@ BigInt_larger:
    .equ EOF, -1
 
    .global main
-
-
-BigInt_add:
-
 main:
 
 // prolog

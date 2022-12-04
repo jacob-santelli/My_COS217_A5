@@ -112,58 +112,56 @@ BigInt_add:
       mov x3, x0
       ldr x0, [sp, OSUM]
       ldr x0, [x0]
+      // need to multiply
       bl memset
    endif1:
 
-
-
-
-
-
-
-
-
-
-
-   
-
-    // if (ulCarry != 1) goto endif4;
+   /* Perform the addition. */
+   //vulCarry = 0
+   mov x0, 0
    str x0, [sp, ULCARRY]
-   cmp x0, 1
-   bne endif4
+   // lIndex = 0
+   mov x0, 0
+   str x0, [sp, LINDEX]
 
-   // if (lSumLength != MAX_DIGITS) goto endif5;
-   str x0, [sp, LSUMLENGTH]
-   str x1, MAX_DIGITS
-   cmp x0, x1
-   bne endif5
 
-   // epilog, return FALSE;
-   mov x0, FALSE
-   ldr x30, [sp]
-   add sp, sp, ADD_STACK_BYTECOUNT
-   ret 
-
-endif5:
-   // oSum->aulDigits[lSumLength] = 1;
-   ldr x0, [sp, OSUM]
-   add x0, x0, AULDIGITS + LSUMLENGTH
-   mov x1, 1
-   str x1, [x0]
-
-   // lSumLength++;
-   ldr x0, [sp, LSUMLENGTH]
-   add x0, x0, 1
-   str x0, [sp, LSUMLENGTH]
-
-endif4:
-   // oSum->lLength = lSumLength;
-   ldr x0, [sp, OSUM]
+   // if (lIndex >= lSumLength) goto endfor1;
+   ldr x0, [sp, LINDEX]
    ldr x1, [sp, LSUMLENGTH]
-   str x1, [x0]
+   cmp x0, x1
+   bge endfor1
+   startfor1:
+      // ulSum = ulCarry;
+      ldr x0, [sp, ULCARRY]
+      ldr [sp, ULSUM], x0
+      // ulCarry = 0
+      mov x0, 0
+      ldr [sp, ULCARRY], x0
 
-   // epilog, return TRUE;
-   mov x0, TRUE
-   ldr x30, [sp]
-   add sp, sp, ADD_STACK_BYTECOUNT
-   ret 
+      // ulSum += oAddend1->aulDigits[lIndex];
+      ldr x0, [sp, OADDEND1]
+      add x1, AULDIGIT, LINDEX
+      ldr x0, [x0, x1]
+
+      // adding to ulSum
+      add x0, x0, [sp, ULSUM]
+      ldr [sp, ULSUM], x0
+
+      /* Check for overflow. */
+      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
+      ldr x0, [sp, OADDEND1]
+      add x1, AULDIGIT, LINDEX
+      ldr x0, [x0, x1]
+           
+         // ulCarry = 1;
+      endif2:
+
+
+
+   // return lLarger;
+   mov     x0, TRUE
+   ldr     x30, [sp]
+   add     sp, sp, ADD_STACK_BYTECOUNT
+   ret
+
+   .size   BigInt_add, (. - BigInt_add)

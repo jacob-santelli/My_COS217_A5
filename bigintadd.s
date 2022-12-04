@@ -46,6 +46,25 @@ BigInt_larger:
     ble else1
 
     // lLarger = lLength1;
+    str x0, [sp, LLARGER]
+
+    // goto endif6;
+    b endif6
+
+    else1:
+    // lLarger = lLength2;
+    str x1, [sp, LLARGER]
+
+    endif6:
+    // return lLarger;
+    ldr     x0, [sp, LLARGER]
+    ldr     x30, [sp]
+    add     sp, sp, LARGER_STACK_BYTECOUNT
+    ret
+
+    .size   BigInt_larger, (. - BigInt_larger)
+
+
 
 
 

@@ -90,14 +90,30 @@ mywc.c work on a series of repeated tab characters.
 mywcBoundary4.txt: a file of only spaces, to ensure mywc.s and
 mywc.c work on a series of repeated space characters.
 
-mywcBoundary5.txt: a file of every single permitted ASCII character,
-to ensure mywc.s and mywc.c work on every single permitted ASCII 
-character. 
+mywcBoundary5.txt: a file of a single char, to ensure mywc.s and
+mywc.c work on a single char.
+
+mywcBoundary6.txt: a file of a single word, to ensure mywc.s and
+mywc.c work on a single word.
+
+mywcBoundary7.txt: a file of a single newline, to ensure mywc.s and
+mywc.c work on a single newline.
+
+mywcBoundary8.txt: a file of every single permitted ASCII character,
+to ensure mywc.s and mywc.c work on many permitted ASCII 
+characters. 
+
+mywcBoundary9.txt: a file of many words, to ensure mywc.s and mywc.c 
+work on many words.
+
+mywcBoundary10.txt: a file of many lines of text, to ensure mywc.s and 
+mywc.c work on many lines (with words in them).
 
 mywcStatement1.txt: contains 'a', followed by a space, then a newline 
-character. 'a' tests lines 0-34, 42-48, and 50-57. The space tests lines 
-0-41, 48, and 50-57. The newline tests lines 0-34 and 42-57. Together, 
-this successfully tests every single line in the program at least once.
+character, and finally a 'b.' 'a' tests lines 0-34, 42-48, and 50. 
+The space tests lines 30-41, 48, and 50. The newline tests lines 30-34 
+and 42-50. The 'b' tests 30-34, 42-44, 46, and 50-57. Together, this 
+successfully tests every single line in the program at least once.
 
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,

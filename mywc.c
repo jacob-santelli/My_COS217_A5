@@ -31,22 +31,22 @@ int main(void)
    {
       lCharCount++;
 
-      if (isspace(iChar)) {
-         if (iInWord) {
+      if (isspace(iChar))
+      {
+         if (iInWord)
+         {
             lWordCount++;
             iInWord = FALSE;
          }
       }
-      else {
-         if (! iInWord) {
+      else
+      {
+         if (! iInWord)
             iInWord = TRUE;
-            
-         }
       }
 
-      if (iChar == '\n') {
+      if (iChar == '\n')
          lLineCount++;
-      }
    }
 
    if (iInWord)

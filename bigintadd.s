@@ -8,6 +8,7 @@
 
    // Must be a multiple of 16
     .equ    LARGER_STACK_BYTECOUNT, 32
+    .equ    ADD_STACK_BYTECOUNT, 64
         
     // Local variable stack offsets:
     .equ LLARGER, 8
@@ -60,6 +61,9 @@ BigInt_larger:
    .equ EOF, -1
 
    .global main
+
+BigInt_add:
+
 main:
 
 // prolog

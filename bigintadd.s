@@ -94,8 +94,26 @@ BigInt_add:
    ldr x1, [sp, OADDEND2]
    ldr x1, [x1]
    bl BigInt_larger
-   ldr x1, [sp LSUMLENGTH]
+   ldr x1, [sp, LSUMLENGTH]
    str x0, [x1]
+
+   /* Clear oSum's array if necessary. */
+   // if (oSum->lLength <= lSumLength) goto endif1;
+   ldr x0, [sp, OSUM]
+   ldr x0, [x0]
+   ldr x1, [sp, LSUMLENGTH]
+   cmp x0, x1
+   ble endif1
+      // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
+      mov w1, 0
+      // this may be wrong
+      ldr x0, [sp, ULCARRY]
+      bl sizeof
+      mov x3, x0
+      ldr x0, [sp, OSUM]
+      ldr x0, [x0]
+      bl memset
+   endif1:
 
    // return lLarger;
    mov     x0, TRUE

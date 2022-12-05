@@ -6,6 +6,9 @@
 
    .section .text
 
+   // enum {MAX_DIGITS = 32768}; 
+   .equ MAX_DIGITS, 32768
+
    // enum {FALSE, TRUE};
    .equ FALSE, 0
    .equ TRUE, 1

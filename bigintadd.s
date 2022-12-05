@@ -85,7 +85,6 @@ BigInt_add:
    str x1, [sp, OADDEND2]
    str x2, [sp, OSUM] 
 
-
    // unsigned long ulCarry;
    // unsigned long ulSum;
    // long lIndex;
@@ -230,6 +229,7 @@ endfor1:
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret 
+   .size   BigInt_add, (. - BigInt_add)
 
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
@@ -254,3 +254,4 @@ endif4:
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret
+   .size   BigInt_add, (. - BigInt_add)

@@ -154,7 +154,7 @@ BigInt_add:
 
       // ulSum += oAddend1->aulDigits[lIndex];
       ldr x0, [sp, OADDEND1]
-      mov x1, LINDEX
+      ldr x1, [sp, LINDEX]
       mov x7, 8
       mul x1, x1, x7
       mov x2, AULDIGIT
@@ -170,7 +170,7 @@ BigInt_add:
       // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
       ldr x0, [sp, ULSUM]
       ldr x1, [sp, OADDEND1]
-      mov x2, LINDEX
+      ldr x2, [sp, LINDEX]
       mov x7, 8
       mul x2, x2, x7
       mov x3, AULDIGIT
@@ -188,7 +188,7 @@ BigInt_add:
 
       // ulSum += oAddend2->aulDigits[lIndex];
       ldr x0, [sp, OADDEND2]
-      mov x1, LINDEX
+      ldr x1, [sp, LINDEX]
       mov x7, 8
       mul x1, x1, x7
       mov x2, AULDIGIT
@@ -203,7 +203,7 @@ BigInt_add:
     // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
    ldr x0, [sp, ULSUM]
    ldr x1, [sp, OADDEND2]
-   mov x2, LINDEX
+   ldr x2, [sp, LINDEX]
    mov x7, 8
    mul x2, x2, x7
    mov x3, AULDIGIT
@@ -220,7 +220,7 @@ BigInt_add:
 endif3:
    // oSum->aulDigits[lIndex] = ulSum;
    ldr x0, [sp, OSUM]
-   mov x1, LINDEX
+   ldr x1, [sp, LINDEX]
    mov x7, 8
    mul x1, x1, x7
    mov x2, AULDIGIT
@@ -260,7 +260,10 @@ endfor1:
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
    ldr x0, [sp, OSUM]
-   add x0, x0, AULDIGIT + LSUMLENGTH
+   ldr x1, [sp, LSUMLENGTH]
+   add x0, x0, x1
+   mov x1, AULDIGIT
+   add x0, x0, x1
    mov x1, 1
    str x1, [x0]
 

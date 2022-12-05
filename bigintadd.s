@@ -76,6 +76,7 @@ BigInt_larger:
 
    .size   BigInt_larger, (. - BigInt_larger)
 
+.global BigInt_add
 BigInt_add:
    // Prolog
    sub sp, sp, ADD_STACK_BYTECOUNT
@@ -111,8 +112,10 @@ BigInt_add:
 
       // third thing
       // this may be wrong
-      ldr x0, [sp, ULCARRY]
-      bl sizeof
+
+      // ldr x0, [sp, ULCARRY]
+      // bl sizeof
+      mov x0, 8
       mov x1, MAX_DIGITS
       mul x0, x0, x1
       mov x3, x0

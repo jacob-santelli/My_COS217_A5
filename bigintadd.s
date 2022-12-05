@@ -96,8 +96,7 @@ BigInt_add:
    ldr x1, [sp, OADDEND2]
    ldr x1, [x1, LLENGTH]
    bl BigInt_larger
-   ldr x1, [sp, LSUMLENGTH]
-   str x0, [x1]
+   str x0, [sp, LSUMLENGTH]
 
    /* Clear oSum's array if necessary. */
    // if (oSum->lLength <= lSumLength) goto endif1;
@@ -118,7 +117,7 @@ BigInt_add:
 
       // first thing
       ldr x0, [sp, OSUM]
-      ldr x0, [x0, AULDIGIT]
+      add x0, x0, AULDIGIT
 
       // second thing
       mov w1, 0
@@ -139,13 +138,13 @@ BigInt_add:
    mov x0, 0
    str x0, [sp, LINDEX]
 
-
+   startfor1:
    // if (lIndex >= lSumLength) goto endfor1;
    ldr x0, [sp, LINDEX]
    ldr x1, [sp, LSUMLENGTH]
    cmp x0, x1
    bge endfor1
-   startfor1:
+
       // ulSum = ulCarry;
       ldr x0, [sp, ULCARRY]
       str x0, [sp, ULSUM]
@@ -246,10 +245,8 @@ endif5:
 
 endif4:
    // oSum->lLength = lSumLength;
-   ldr x0, [sp, OSUM]
-   ldr x0, [x0, LLENGTH]
    ldr x1, [sp, LSUMLENGTH]
-   str x1, [x0]
+   str x1, [sp, OSUM]
 
    // epilog, return TRUE;
    mov x0, TRUE

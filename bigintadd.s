@@ -240,12 +240,12 @@ endif3:
 endfor1:
 
     // if (ulCarry != 1) goto endif4;
-   str x0, [sp, ULCARRY]
+   ldr x0, [sp, ULCARRY]
    cmp x0, 1
    bne endif4
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
-   str x0, [sp, LSUMLENGTH]
+   ldr x0, [sp, LSUMLENGTH]
    mov x1, MAX_DIGITS
    cmp x0, x1
    bne endif5

@@ -62,11 +62,11 @@ BigInt_larger:
    // goto endif6;
    b endif6
 
-   else1:
+else1:
    // lLarger = lLength2;
    str x1, [sp, LLARGER]
 
-   endif6:
+endif6:
    // return lLarger;
    ldr     x0, [sp, LLARGER]
    ldr     x30, [sp]
@@ -75,7 +75,7 @@ BigInt_larger:
 
    .size   BigInt_larger, (. - BigInt_larger)
 
-.global BigInt_add
+   .global BigInt_add
 BigInt_add:
    // Prolog
    sub sp, sp, ADD_STACK_BYTECOUNT
@@ -105,30 +105,23 @@ BigInt_add:
    ldr x1, [sp, LSUMLENGTH]
    cmp x0, x1
    ble endif1
-      // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
-      // third thing
+   // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
-      // ldr x0, [sp, ULCARRY]
-      // bl sizeof
-      // mov x1, MAX_DIGITS
-      // mul x0, x0, x1
-      // mov x3, x0
+   // first thing
+   ldr x0, [sp, OSUM]
+   add x0, x0, AULDIGIT
 
-      // first thing
-      ldr x0, [sp, OSUM]
-      add x0, x0, AULDIGIT
+   // second thing
+   mov w1, 0
 
-      // second thing
-      mov w1, 0
+   // third thing
+   mov x2, 8
+   mov x3, MAX_DIGITS
+   mul x2, x2, x3
 
-      // third thing
-      mov x2, 8
-      mov x3, MAX_DIGITS
-      mul x2, x2, x3
-
-      bl memset
-   endif1:
+   bl memset
+endif1:
 
    /* Perform the addition. */
    // ulCarry = 0
@@ -145,53 +138,52 @@ BigInt_add:
    cmp x0, x1
    bge endfor1
 
-      // ulSum = ulCarry;
-      ldr x0, [sp, ULCARRY]
-      str x0, [sp, ULSUM]
-      // ulCarry = 0
-      mov x0, 0
-      str x0, [sp, ULCARRY]
+   // ulSum = ulCarry;
+   ldr x0, [sp, ULCARRY]
+   str x0, [sp, ULSUM]
+   // ulCarry = 0
+   mov x0, 0
+   str x0, [sp, ULCARRY]
 
-      // ulSum += oAddend1->aulDigits[lIndex];
-      ldr x0, [sp, OADDEND1]
-      ldr x1, [sp, LINDEX]
-      mov x7, AULDIGIT
-      add x0, x0, x7
-      ldr x2, [x0, x1, lsl 3]
+   // ulSum += oAddend1->aulDigits[lIndex];
+   ldr x0, [sp, OADDEND1]
+   ldr x1, [sp, LINDEX]
+   mov x7, AULDIGIT
+   add x0, x0, x7
+   ldr x2, [x0, x1, lsl 3]
 
-      // adding to ulSum
-      ldr x1, [sp, ULSUM]
-      add x1, x1, x2
-      str x1, [sp, ULSUM]
+   // adding to ulSum
+   ldr x1, [sp, ULSUM]
+   add x1, x1, x2
+   str x1, [sp, ULSUM]
 
-      /* Check for overflow. */
-      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
-      ldr x0, [sp, ULSUM]
-      ldr x1, [sp, OADDEND1]
-      ldr x2, [sp, LINDEX]
-      mov x7, AULDIGIT
-      add x1, x1, x7
-      ldr x3, [x1, x2, lsl 3]
-      cmp x0, x3
-      bhs endif2
+   /* Check for overflow. */
+   // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
+   ldr x0, [sp, ULSUM]
+   ldr x1, [sp, OADDEND1]
+   ldr x2, [sp, LINDEX]
+   mov x7, AULDIGIT
+   add x1, x1, x7
+   ldr x3, [x1, x2, lsl 3]
+   cmp x0, x3
+   bhs endif2
 
-         // ulCarry = 1;
-         mov x0, 1
-         str x0, [sp, ULCARRY]
-      
-      endif2:
+   // ulCarry = 1;
+   mov x0, 1
+   str x0, [sp, ULCARRY]
+   
+endif2:
+   // ulSum += oAddend2->aulDigits[lIndex];
+   ldr x0, [sp, OADDEND2]
+   ldr x1, [sp, LINDEX]
+   mov x7, AULDIGIT
+   add x0, x0, x7
+   ldr x2, [x0, x1, lsl 3]
 
-      // ulSum += oAddend2->aulDigits[lIndex];
-      ldr x0, [sp, OADDEND2]
-      ldr x1, [sp, LINDEX]
-      mov x7, AULDIGIT
-      add x0, x0, x7
-      ldr x2, [x0, x1, lsl 3]
-
-      // adding to ulSum
-      ldr x1, [sp, ULSUM]
-      add x1, x1, x2
-      str x1, [sp, ULSUM]
+   // adding to ulSum
+   ldr x1, [sp, ULSUM]
+   add x1, x1, x2
+   str x1, [sp, ULSUM]
 
     // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
    ldr x0, [sp, ULSUM]
@@ -201,7 +193,6 @@ BigInt_add:
    add x1, x1, x7
    ldr x3, [x1, x2, lsl 3]
    cmp x0, x3
-   // bge might be wrong bcond
    bhs endif3
 
    // ulCarry = 1

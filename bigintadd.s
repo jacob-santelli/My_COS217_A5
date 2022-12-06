@@ -261,6 +261,8 @@ endif5:
    // oSum->aulDigits[lSumLength] = 1;
    ldr x0, [sp, OSUM]
    ldr x1, [sp, LSUMLENGTH]
+   mov x7, 8
+   mul x1, x1, x7
    add x0, x0, x1
    mov x1, AULDIGIT
    add x0, x0, x1
@@ -275,7 +277,8 @@ endif5:
 endif4:
    // oSum->lLength = lSumLength;
    ldr x1, [sp, LSUMLENGTH]
-   str x1, [sp, OSUM]
+   ldr x0, [sp, OSUM]
+   str x1, [x0]
 
    // epilog, return TRUE;
    mov x0, TRUE

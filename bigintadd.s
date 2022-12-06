@@ -173,7 +173,7 @@ BigInt_add:
       add x1, x1, x7
       ldr x3, [x1, x2, lsl 3]
       cmp x0, x3
-      bge endif2
+      bhs endif2
 
          // ulCarry = 1;
          mov x0, 1
@@ -202,7 +202,7 @@ BigInt_add:
    ldr x3, [x1, x2, lsl 3]
    cmp x0, x3
    // bge might be wrong bcond
-   bge endif3
+   bhs endif3
 
    // ulCarry = 1
    mov x1, 1

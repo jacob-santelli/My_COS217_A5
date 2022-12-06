@@ -45,32 +45,36 @@ BigInt_larger:
    // Prolog
    sub sp, sp, LARGER_STACK_BYTECOUNT
    str x30, [sp]
-   str x0, [sp, LLENGTH1]
-   str x1, [sp, LLENGTH2]
+   str x19, [sp, 8] // LLENGTH1
+   str x20, [sp, 16] // LLENGTH2
+   str x21, [sp, 24] // LLARGER
+   mov x19, x0
+   mov x20, x1
 
    // long lLarger
 
    // if (lLength1 <= lLength2) goto else1;
-   ldr x0, [sp, LLENGTH1]
-   ldr x1, [sp, LLENGTH2]
-   cmp x0, x1
+   cmp x19, x20
    ble else1
 
    // lLarger = lLength1;
-   str x0, [sp, LLARGER]
+   mov x21, x19
 
    // goto endif6;
    b endif6
 
    else1:
    // lLarger = lLength2;
-   str x1, [sp, LLARGER]
+   mov x21, x20
 
    endif6:
    // return lLarger;
-   ldr     x0, [sp, LLARGER]
-   ldr     x30, [sp]
-   add     sp, sp, LARGER_STACK_BYTECOUNT
+   mov x0, x21
+   ldr x19, [sp, 8]
+   ldr x20, [sp, 16]
+   ldr x21, [sp, 24]
+   ldr x30, [sp]
+   add sp, sp, LARGER_STACK_BYTECOUNT
    ret
 
    .size   BigInt_larger, (. - BigInt_larger)

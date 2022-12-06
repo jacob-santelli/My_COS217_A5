@@ -95,9 +95,9 @@ BigInt_add:
    ldr x0, [x0, LLENGTH]
    ldr x1, [sp, OADDEND2]
    ldr x1, [x1, LLENGTH]
-        bl BigInt_larger
-        ldr x1, [sp, LSUMLENGTH]
-        str x0, [x1]
+   bl BigInt_larger
+   ldr x1, [sp, LSUMLENGTH]
+   str x0, [x1]
 
    /* Clear oSum's array if necessary. */
    // if (oSum->lLength <= lSumLength) goto endif1;
@@ -164,7 +164,7 @@ BigInt_add:
       ldr x1, [sp, ULSUM]
       add x1, x1, x2
       str x1, [sp, ULSUM]
-      
+
       /* Check for overflow. */
       // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
       ldr x0, [sp, ULSUM]

@@ -96,8 +96,7 @@ BigInt_add:
    ldr x1, [sp, OADDEND2]
    ldr x1, [x1, LLENGTH]
    bl BigInt_larger
-   ldr x1, [sp, LSUMLENGTH]
-   str x0, [x1]
+   str x0, [sp, LSUMLENGTH]
 
    /* Clear oSum's array if necessary. */
    // if (oSum->lLength <= lSumLength) goto endif1;

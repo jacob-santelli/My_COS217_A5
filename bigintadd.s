@@ -155,29 +155,24 @@ BigInt_add:
       // ulSum += oAddend1->aulDigits[lIndex];
       ldr x0, [sp, OADDEND1]
       ldr x1, [sp, LINDEX]
-      mov x7, 8
-      mul x1, x1, x7
-      mov x2, AULDIGIT
-      add x1, x1, x2
-      ldr x0, [x0, x1]
+      mov x7, AULDIGIT
+      add x0, x0, x7
+      ldr x2, [x0, x1, lsl 3]
 
       // adding to ulSum
       ldr x1, [sp, ULSUM]
-      add x0, x0, x1
-      str x0, [sp, ULSUM]
-
+      add x1, x1, x2
+      str x1, [sp, ULSUM]
+      
       /* Check for overflow. */
       // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
       ldr x0, [sp, ULSUM]
       ldr x1, [sp, OADDEND1]
       ldr x2, [sp, LINDEX]
-      mov x7, 8
-      mul x2, x2, x7
-      mov x3, AULDIGIT
-      add x2, x2, x3
-      ldr x1, [x1, x2]
-
-      cmp x0, x1
+      mov x7, AULDIGIT
+      add x1, x1, x7
+      ldr x3, [x1, x2, lsl 3]
+      cmp x0, x3
       bge endif2
 
          // ulCarry = 1;
@@ -189,27 +184,23 @@ BigInt_add:
       // ulSum += oAddend2->aulDigits[lIndex];
       ldr x0, [sp, OADDEND2]
       ldr x1, [sp, LINDEX]
-      mov x7, 8
-      mul x1, x1, x7
-      mov x2, AULDIGIT
-      add x1, x1, x2
-      ldr x0, [x0, x1]
+      mov x7, AULDIGIT
+      add x0, x0, x7
+      ldr x2, [x0, x1, lsl 3]
 
       // adding to ulSum
       ldr x1, [sp, ULSUM]
-      add x0, x0, x1
-      str x0, [sp, ULSUM]
+      add x1, x1, x2
+      str x1, [sp, ULSUM]
 
     // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
    ldr x0, [sp, ULSUM]
    ldr x1, [sp, OADDEND2]
    ldr x2, [sp, LINDEX]
-   mov x7, 8
-   mul x2, x2, x7
-   mov x3, AULDIGIT
-   add x2, x2, x3
-   ldr x1, [x1, x2]
-   cmp x0, x1
+   mov x7, AULDIGIT
+   add x1, x1, x7
+   ldr x3, [x1, x2, lsl 3]
+   cmp x0, x3
    // bge might be wrong bcond
    bge endif3
 
@@ -221,13 +212,10 @@ endif3:
    // oSum->aulDigits[lIndex] = ulSum;
    ldr x0, [sp, OSUM]
    ldr x1, [sp, LINDEX]
-   mov x7, 8
-   mul x1, x1, x7
-   mov x2, AULDIGIT
-   add x1, x1, x2
-   add x0, x0, x1
-   ldr x1, [sp, ULSUM]
-   str x1, [x0]
+   mov x7, AULDIGIT
+   add x0, x0, x7
+   ldr x2, [sp, ULSUM]
+   str x2, [x0, x1, lsl 3]
 
    // lIndex++;
    ldr x0, [sp, LINDEX]
@@ -259,15 +247,13 @@ endfor1:
 
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
-   ldr x0, [sp, OSUM]
    ldr x1, [sp, LSUMLENGTH]
-   mov x7, 8
-   mul x1, x1, x7
-   add x0, x0, x1
-   mov x1, AULDIGIT
-   add x0, x0, x1
-   mov x1, 1
-   str x1, [x0]
+   ldr x0, [sp, OSUM]
+   mov x7, AULDIGIT
+   add x0, x0, x7
+   mov x2, 1
+   str x2, [x0, x1, lsl 3]
+
 
    // lSumLength++;
    ldr x0, [sp, LSUMLENGTH]

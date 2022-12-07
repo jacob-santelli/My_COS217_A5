@@ -40,50 +40,6 @@
    .equ LLENGTH, 0
    .equ AULDIGIT, 8
 
-BigInt_larger:
-
-   // Prolog
-   sub sp, sp, LARGER_STACK_BYTECOUNT
-   str x30, [sp]
-
-   LLENGTH1 .req x19
-   LLENGTH2 .req x20
-   LLARGER .req x21
-
-   str LLENGTH1, [sp, 8] // LLENGTH1
-   str LLENGTH2, [sp, 16] // LLENGTH2
-   str LLARGER, [sp, 24] // LLARGER
-   
-   mov LLENGTH1, x0
-   mov LLENGTH2, x1
-
-   // long lLarger
-
-   // if (lLength1 <= lLength2) goto else1;
-   cmp LLENGTH1, LLENGTH2
-   ble else1
-
-   // lLarger = lLength1;
-   mov LLARGER, LLENGTH1
-
-   // goto endif6;
-   b endif6
-
-else1:
-   // lLarger = lLength2;
-   mov LLARGER, LLENGTH2
-
-endif6:
-   // return lLarger;
-   mov x0, LLARGER
-   ldr LLENGTH1, [sp, 8]
-   ldr LLENGTH2, [sp, 16]
-   ldr LLARGER, [sp, 24]
-   ldr x30, [sp]
-   add sp, sp, LARGER_STACK_BYTECOUNT
-   ret
-
-   .size   BigInt_larger, (. - BigInt_larger)
 
    .global BigInt_add
 BigInt_add:
@@ -120,8 +76,25 @@ BigInt_add:
    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
    ldr x0, [OADDEND1]
    ldr x1, [OADDEND2]
-   bl BigInt_larger
+
+
+   // bl BigInt_larger
+
+   // if (lLength1 <= lLength2) goto else1;
+   cmp x0, x1
+   ble else1
+
+   // lLarger = lLength1;
    mov LSUMLENGTH, x0
+
+   // goto endif6;
+   b endif6
+
+else1:
+   // lLarger = lLength2;
+   mov LSUMLENGTH, x1
+
+endif6:
 
    /* Clear oSum's array if necessary. */
    // if (oSum->lLength <= lSumLength) goto endif1;

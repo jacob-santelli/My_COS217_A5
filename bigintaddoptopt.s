@@ -113,8 +113,7 @@ endif1:
    cbz LSUMLENGTH, endif4
 
    // set c flag to zero
-   mov x0, 1
-   adcs x0, x0, x0
+   adcs x0, LINDEX, LINDEX
 
 startfor1:
 

@@ -128,10 +128,6 @@ endif1:
    cmp LINDEX, LSUMLENGTH
    bge endfor1
 
-   // set c flag to zero
-   mov x0, 1
-   adcs x0, x0, x0
-
 startfor1:
 
    // ulSum = 0
@@ -161,12 +157,12 @@ startfor1:
    // lIndex++;
    add LINDEX, LINDEX, 1
 
-   // if (lIndex < lSumLength) goto startfor1
-   sub x0, LINDEX, LSUMLENGTH
-   cbnz x0, startfor1
+   // if (lIndex < lSumLength) goto endfor1;
+   cmp LINDEX, LSUMLENGTH
+   blt startfor1
 
 endfor1:
-   bcc endif4
+   bhs endif4
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
    mov x1, MAX_DIGITS

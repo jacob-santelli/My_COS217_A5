@@ -11,15 +11,15 @@ Boundary test 4a: ffffffffffffffff
 Boundary test 4b: ffffffffffffffff
 Boundary test 5a: ffffffffffffffff
 Boundary test 5b: ffffffffffffffff
-Boundary test 6a: 00000000000000010000000000000000
-Boundary test 6b: 00000000000000010000000000000000
-Boundary test 7a: 000000000000000100000000000000000000000000000000
-Boundary test 7b: 000000000000000100000000000000000000000000000000
+Boundary test 6a: 0000000000000000
+Boundary test 6b: 0000000000000000
+Boundary test 7a: ffffffffffffffff0000000000000000
+Boundary test 7b: ffffffffffffffff0000000000000000
 Boundary test 8a: ffffffffffffffff...ffffffffffffffff
 Boundary test 8b: ffffffffffffffff...ffffffffffffffff
-Boundary test 9a: Addition overflow
-Boundary test 9b: Addition overflow
-Boundary test 10: Addition overflow
+Boundary test 9a: ffffffffffffffff...0000000000000000
+Boundary test 9b: ffffffffffffffff...0000000000000000
+Boundary test 10: fffffffffffffffe...fffffffffffffffe
 ------------------------------------------------
 Stress test 0a: 073e647be13faa58...64c479737dc8ec5b
 Stress test 0b: a60cefb66aed1818...c9ab65575a490c6e

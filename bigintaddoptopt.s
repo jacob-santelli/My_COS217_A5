@@ -127,36 +127,21 @@ endif1:
    // if (lIndex >= lSumLength) goto endfor1;
    cmp LINDEX, LSUMLENGTH
    bge endfor1
-startfor1:
-   
 
-   // ulSum = ulCarry;
-   mov ULSUM, ULCARRY
-   // ulCarry = 0
-   mov ULCARRY, 0
+   // clear c flag
+   mov x0, 0
+   adcs x0, x0, x0
+
+startfor1:
+
+   // ulSum = 0
+   mov ULSUM, 0
 
    // ulSum += oAddend1->aulDigits[lIndex];
    mov x0, OADDEND1
    mov x7, AULDIGIT
    add x0, x0, x7
-   ldr x2, [x0, LINDEX, lsl 3]
-
-   // adding to ulSum
-   add ULSUM, ULSUM, x2
-
-   /* Check for overflow. */
-   // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
-   mov x0, OADDEND1
-   mov x7, AULDIGIT
-   add x0, x0, x7
    ldr x1, [x0, LINDEX, lsl 3]
-   cmp ULSUM, x1
-   bhs endif2
-
-   // ulCarry = 1;
-   mov ULCARRY, 1
-   
-endif2:
 
    // ulSum += oAddend2->aulDigits[lIndex];
    mov x0, OADDEND2
@@ -165,20 +150,8 @@ endif2:
    ldr x2, [x0, LINDEX, lsl 3]
 
    // adding to ulSum
-   add ULSUM, ULSUM, x2
+   adcs ULSUM, x1, x2
 
-    // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
-   mov x0, OADDEND2
-   mov x7, AULDIGIT
-   add x0, x0, x7
-   ldr x1, [x0, LINDEX, lsl 3]
-   cmp ULSUM, x1
-   bhs endif3
-
-   // ulCarry = 1
-   mov ULCARRY, 1
-
-endif3:
    // oSum->aulDigits[lIndex] = ulSum;
    mov x0, OSUM
    mov x7, AULDIGIT
@@ -191,11 +164,9 @@ endif3:
    // if (lIndex < lSumLength) goto endfor1;
    cmp LINDEX, LSUMLENGTH
    blt startfor1
-endfor1:
 
-    // if (ulCarry != 1) goto endif4;
-   cmp ULCARRY, 1
-   bne endif4
+endfor1:
+   bhs endif4
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
    mov x1, MAX_DIGITS

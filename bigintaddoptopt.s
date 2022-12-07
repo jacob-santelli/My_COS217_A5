@@ -142,16 +142,8 @@ startfor1:
    ldr x2, [x0, LINDEX, lsl 3]
 
    // adding to ulSum
-   add ULSUM, ULSUM, x2
-
-   /* Check for overflow. */
-   // if (ulSum >= oAddend1->aulDigits[lIndex]) goto endif2;
-   mov x0, OADDEND1
-   mov x7, AULDIGIT
-   add x0, x0, x7
-   ldr x1, [x0, LINDEX, lsl 3]
-   cmp ULSUM, x1
-   bhs endif2
+   adcs ULSUM, ULSUM, x2
+   blo endif2
 
    // ulCarry = 1;
    mov ULCARRY, 1
@@ -165,15 +157,8 @@ endif2:
    ldr x2, [x0, LINDEX, lsl 3]
 
    // adding to ulSum
-   add ULSUM, ULSUM, x2
-
-    // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
-   mov x0, OADDEND2
-   mov x7, AULDIGIT
-   add x0, x0, x7
-   ldr x1, [x0, LINDEX, lsl 3]
-   cmp ULSUM, x1
-   bhs endif3
+   adcs ULSUM, ULSUM, x2
+   blo endif3
 
    // ulCarry = 1
    mov ULCARRY, 1

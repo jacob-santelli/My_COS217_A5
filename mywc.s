@@ -28,9 +28,9 @@ iChar: .skip 4
    .global main
 main:
 
-// prolog
-sub sp, sp, MAIN_STACK_BYTECOUNT
-str x30, [sp]
+   // prolog
+   sub sp, sp, MAIN_STACK_BYTECOUNT
+   str x30, [sp]
 
 loop1:
 

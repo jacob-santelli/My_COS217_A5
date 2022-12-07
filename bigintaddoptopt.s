@@ -197,7 +197,7 @@ endif4:
 
    // epilog, return TRUE;
    mov x0, TRUE
-   ldr x30, [sp]g
+   ldr x30, [sp]
    ldr ULSUM, [sp, 16] // ULSUM
    ldr LINDEX, [sp, 24] // LINDEX
    ldr LSUMLENGTH, [sp, 32] // LSUMLENGTH

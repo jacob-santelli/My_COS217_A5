@@ -47,7 +47,6 @@ BigInt_add:
    sub sp, sp, ADD_STACK_BYTECOUNT
    str x30, [sp]
 
-   ULCARRY .req x19
    ULSUM .req x20
    LINDEX .req x21
    LSUMLENGTH .req x22
@@ -55,7 +54,6 @@ BigInt_add:
    OADDEND2 .req x24
    OSUM .req x25
 
-   str ULCARRY, [sp, 8] // ULCARRY
    str ULSUM, [sp, 16] // ULSUM
    str LINDEX, [sp, 24] // LINDEX
    str LSUMLENGTH, [sp, 32] // LSUMLENGTH
@@ -76,7 +74,7 @@ BigInt_add:
    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
    ldr x0, [OADDEND1]
    ldr x1, [OADDEND2]
-   
+
    // if (lLength1 <= lLength2) goto else1;
    cmp x0, x1
    ble else1
@@ -117,8 +115,6 @@ endif6:
 endif1:
 
    /* Perform the addition. */
-   // ulCarry = 0
-   mov ULCARRY, 0
    // lIndex = 0
    mov LINDEX, 0
 
@@ -174,7 +170,6 @@ endfor1:
    // epilog, return FALSE;
    mov x0, FALSE
    ldr x30, [sp]
-   ldr ULCARRY, [sp, 8] // ULCARRY
    ldr ULSUM, [sp, 16] // ULSUM
    ldr LINDEX, [sp, 24] // LINDEX
    ldr LSUMLENGTH, [sp, 32] // LSUMLENGTH
@@ -203,7 +198,6 @@ endif4:
    // epilog, return TRUE;
    mov x0, TRUE
    ldr x30, [sp]
-   ldr ULCARRY, [sp, 8] // ULCARRY
    ldr ULSUM, [sp, 16] // ULSUM
    ldr LINDEX, [sp, 24] // LINDEX
    ldr LSUMLENGTH, [sp, 32] // LSUMLENGTH

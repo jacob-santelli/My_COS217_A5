@@ -104,11 +104,9 @@ endif6:
 
    // second thing
    mov w1, 0
-
    // third thing
-   mov x2, 8
-   mov x3, MAX_DIGITS
-   mul x2, x2, x3
+   mov x2, MAX_DIGITS
+   lsl x2, x2, 3
 
    bl memset
 
@@ -132,24 +130,18 @@ startfor1:
    mov ULSUM, 0
 
    // ulSum += oAddend1->aulDigits[lIndex];
-   mov x0, OADDEND1
-   mov x7, AULDIGIT
-   add x0, x0, x7
+   add x0, OADDEND1, AULDIGIT
    ldr x1, [x0, LINDEX, lsl 3]
 
    // ulSum += oAddend2->aulDigits[lIndex];
-   mov x0, OADDEND2
-   mov x7, AULDIGIT
-   add x0, x0, x7
+   add x0, OADDEND2, AULDIGIT
    ldr x2, [x0, LINDEX, lsl 3]
 
    // adding to ulSum
    adcs ULSUM, x1, x2
 
    // oSum->aulDigits[lIndex] = ulSum;
-   mov x0, OSUM
-   mov x7, AULDIGIT
-   add x0, x0, x7
+   add x0, OSUM, AULDIGIT
    str ULSUM, [x0, LINDEX, lsl 3]
 
    // lIndex++;
@@ -182,9 +174,7 @@ endfor1:
 
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
-   mov x0, OSUM
-   mov x7, AULDIGIT
-   add x0, x0, x7
+   add x0, OSUM, AULDIGIT
    mov x2, 1
    str x2, [x0, LSUMLENGTH, lsl 3]
 

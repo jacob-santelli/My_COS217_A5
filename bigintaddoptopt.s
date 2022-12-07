@@ -110,8 +110,7 @@ endif1:
    mov LINDEX, 0
 
    // if (lIndex >= lSumLength) goto endfor1;
-   cmp LINDEX, LSUMLENGTH
-   bge endif4
+   cbz LSUMLENGTH, endif4
 
    // set c flag to zero
    mov x0, 1
@@ -119,14 +118,11 @@ endif1:
 
 startfor1:
 
-   // ulSum = 0
-   mov ULSUM, 0
-
-   // ulSum += oAddend1->aulDigits[lIndex];
+   // find oAddend1->aulDigits[lIndex];
    add x0, OADDEND1, AULDIGIT
    ldr x1, [x0, LINDEX, lsl 3]
 
-   // ulSum += oAddend2->aulDigits[lIndex];
+   // find oAddend2->aulDigits[lIndex];
    add x0, OADDEND2, AULDIGIT
    ldr x2, [x0, LINDEX, lsl 3]
 

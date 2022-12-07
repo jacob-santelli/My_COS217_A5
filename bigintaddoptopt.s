@@ -76,10 +76,7 @@ BigInt_add:
    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
    ldr x0, [OADDEND1]
    ldr x1, [OADDEND2]
-
-
-   // bl BigInt_larger
-
+   
    // if (lLength1 <= lLength2) goto else1;
    cmp x0, x1
    ble else1
@@ -116,6 +113,7 @@ endif6:
    mul x2, x2, x3
 
    bl memset
+
 endif1:
 
    /* Perform the addition. */
@@ -126,7 +124,7 @@ endif1:
 
    // if (lIndex >= lSumLength) goto endfor1;
    cmp LINDEX, LSUMLENGTH
-   bge endfor1
+   bge endif4
 
    // set c flag to zero
    mov x0, 1

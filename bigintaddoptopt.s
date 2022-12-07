@@ -47,19 +47,12 @@ BigInt_add:
    sub sp, sp, ADD_STACK_BYTECOUNT
    str x30, [sp]
 
-   ULSUM .req x20
-   LINDEX .req x21
-   LSUMLENGTH .req x22
-   OADDEND1 .req x23
-   OADDEND2 .req x24
-   OSUM .req x25
-
-   str ULSUM, [sp, 16] // ULSUM
-   str LINDEX, [sp, 24] // LINDEX
-   str LSUMLENGTH, [sp, 32] // LSUMLENGTH
-   str OADDEND1, [sp, 40] // OADDEND1
-   str OADDEND2, [sp, 48] // OADDEND2
-   str OSUM, [sp, 56] // OSUM
+   ULSUM .req x4
+   LINDEX .req x5
+   LSUMLENGTH .req x6
+   OADDEND1 .req x7
+   OADDEND2 .req x8
+   OSUM .req x9
 
    mov OADDEND1, x0
    mov OADDEND2, x1
@@ -162,12 +155,6 @@ endfor1:
    // epilog, return FALSE;
    mov x0, FALSE
    ldr x30, [sp]
-   ldr ULSUM, [sp, 16] // ULSUM
-   ldr LINDEX, [sp, 24] // LINDEX
-   ldr LSUMLENGTH, [sp, 32] // LSUMLENGTH
-   ldr OADDEND1, [sp, 40] // OADDEND1
-   ldr OADDEND2, [sp, 48] // OADDEND2
-   ldr OSUM, [sp, 56] // OSUM
    add sp, sp, ADD_STACK_BYTECOUNT
    ret 
    .size   BigInt_add, (. - BigInt_add)
@@ -188,12 +175,6 @@ endif4:
    // epilog, return TRUE;
    mov x0, TRUE
    ldr x30, [sp]
-   ldr ULSUM, [sp, 16] // ULSUM
-   ldr LINDEX, [sp, 24] // LINDEX
-   ldr LSUMLENGTH, [sp, 32] // LSUMLENGTH
-   ldr OADDEND1, [sp, 40] // OADDEND1
-   ldr OADDEND2, [sp, 48] // OADDEND2
-   ldr OSUM, [sp, 56] // OSUM
    add sp, sp, ADD_STACK_BYTECOUNT
    ret
    .size   BigInt_add, (. - BigInt_add)

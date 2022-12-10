@@ -1,0 +1,70 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  us/call  us/call  name    
+ 95.84      2.00     2.00                             startfor1
+  3.83      2.08     0.08      100   801.26   801.26  BigInt_random
+  0.48      2.09     0.01                             else1
+  0.00      2.09     0.00       42     0.00     0.00  BigInt_writeHexAbbrev
+  0.00      2.09     0.00       36     0.00     0.00  BigInt_free
+  0.00      2.09     0.00       36     0.00     0.00  BigInt_new
+  0.00      2.09     0.00       36     0.00     0.00  createBigInt
+  0.00      2.09     0.00       14     0.00     0.00  BigInt_writeHex
+  0.00      2.09     0.00        4     0.00     0.00  BigInt_assignFromHexStr
+  0.00      2.09     0.00        4     0.00     0.00  BigInt_largest
+
+			Call graph
+
+
+granularity: each sample hit covers 2 byte(s) for 0.48% of 2.09 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     95.7    2.00    0.00                 startfor1 [1]
+-----------------------------------------------
+                0.08    0.00     100/100         main [3]
+[2]      3.8    0.08    0.00     100         BigInt_random [2]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]      3.8    0.00    0.08                 main [3]
+                0.08    0.00     100/100         BigInt_random [2]
+                0.00    0.00      42/42          BigInt_writeHexAbbrev [5]
+                0.00    0.00      36/36          createBigInt [8]
+                0.00    0.00      36/36          BigInt_free [6]
+                0.00    0.00      14/14          BigInt_writeHex [9]
+                0.00    0.00       4/4           BigInt_assignFromHexStr [10]
+                0.00    0.00       4/4           BigInt_largest [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[4]      0.5    0.01    0.00                 else1 [4]
+-----------------------------------------------
+                0.00    0.00      42/42          main [3]
+[5]      0.0    0.00    0.00      42         BigInt_writeHexAbbrev [5]
+-----------------------------------------------
+                0.00    0.00      36/36          main [3]
+[6]      0.0    0.00    0.00      36         BigInt_free [6]
+-----------------------------------------------
+                0.00    0.00      36/36          createBigInt [8]
+[7]      0.0    0.00    0.00      36         BigInt_new [7]
+-----------------------------------------------
+                0.00    0.00      36/36          main [3]
+[8]      0.0    0.00    0.00      36         createBigInt [8]
+                0.00    0.00      36/36          BigInt_new [7]
+-----------------------------------------------
+                0.00    0.00      14/14          main [3]
+[9]      0.0    0.00    0.00      14         BigInt_writeHex [9]
+-----------------------------------------------
+                0.00    0.00       4/4           main [3]
+[10]     0.0    0.00    0.00       4         BigInt_assignFromHexStr [10]
+-----------------------------------------------
+                0.00    0.00       4/4           main [3]
+[11]     0.0    0.00    0.00       4         BigInt_largest [11]
+-----------------------------------------------
+
+Index by function name
+
+  [10] BigInt_assignFromHexStr [2] BigInt_random           [4] else1
+   [6] BigInt_free             [9] BigInt_writeHex         [1] startfor1
+  [11] BigInt_largest          [5] BigInt_writeHexAbbrev
+   [7] BigInt_new              [8] createBigInt

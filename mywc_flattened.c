@@ -26,10 +26,6 @@ static int iInWord = FALSE;      /* Bad style. */
    Whitespace is defined by the isspace() function. Return 0. */
 
 int main(void) {
-
-
-
-
 loop1:
    if ((iChar = getchar()) == EOF) goto endloop1;
    lCharCount++;
@@ -59,10 +55,5 @@ if (!iInWord) goto endif4;
 endif4:
 
 printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
-return 0;
-
-
-
-
-   
+return 0; 
 }

@@ -17,13 +17,12 @@
    .equ LARGER_STACK_BYTECOUNT, 32
    .equ ADD_STACK_BYTECOUNT, 64
       
-   // Local variable stack offsets:
+   // Local variable stack offsets for BigInt_larger:
    .equ LLARGER, 8
 
-   // Parameter stack offsets:
+   // Parameter stack offsets for BigInt_larger:
    .equ LLENGTH1, 16
    .equ LLENGTH2, 24
-
 
    // Local variable stack offsets for BigInt_add:
    .equ ULCARRY, 8
@@ -99,6 +98,7 @@ BigInt_add:
    OADDEND2 .req x24
    OSUM .req x25
 
+   // using callee saved registers
    str ULCARRY, [sp, 8] // ULCARRY
    str ULSUM, [sp, 16] // ULSUM
    str LINDEX, [sp, 24] // LINDEX
@@ -130,14 +130,14 @@ BigInt_add:
    ble endif1
    // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
-   // first thing
+   // first parameter
    mov x0, OSUM
    add x0, x0, AULDIGIT
 
-   // second thing
+   // second parameter
    mov w1, 0
 
-   // third thing
+   // third parameter
    mov x2, 8
    mov x3, MAX_DIGITS
    mul x2, x2, x3

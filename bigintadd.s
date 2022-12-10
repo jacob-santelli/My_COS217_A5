@@ -107,19 +107,20 @@ BigInt_add:
 
    // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
-   // first thing
+   // first parameter
    ldr x0, [sp, OSUM]
    add x0, x0, AULDIGIT
 
-   // second thing
+   // second parameter
    mov w1, 0
 
-   // third thing
+   // third parameter
    mov x2, 8
    mov x3, MAX_DIGITS
    mul x2, x2, x3
 
    bl memset
+
 endif1:
 
    /* Perform the addition. */
@@ -130,7 +131,7 @@ endif1:
    mov x0, 0
    str x0, [sp, LINDEX]
 
-   startfor1:
+startfor1:
    // if (lIndex >= lSumLength) goto endfor1;
    ldr x0, [sp, LINDEX]
    ldr x1, [sp, LSUMLENGTH]
@@ -184,7 +185,8 @@ endif2:
    add x1, x1, x2
    str x1, [sp, ULSUM]
 
-    // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3; /* Check for overflow. */
+   /* Check for overflow. */
+    // if (ulSum >= oAddend2->aulDigits[lIndex]) goto endif3;
    ldr x0, [sp, ULSUM]
    ldr x1, [sp, OADDEND2]
    ldr x2, [sp, LINDEX]
@@ -243,7 +245,6 @@ endif5:
    add x0, x0, x7
    mov x2, 1
    str x2, [x0, x1, lsl 3]
-
 
    // lSumLength++;
    ldr x0, [sp, LSUMLENGTH]

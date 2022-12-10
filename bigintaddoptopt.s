@@ -6,32 +6,9 @@
 
    .section .text
 
-
-   // enum {FALSE, TRUE};
-   .equ FALSE, 0
-   .equ TRUE, 1
-
-   // Must be a multiple of 16
+   // Must be multiples of 16
    .equ LARGER_STACK_BYTECOUNT, 32
    .equ ADD_STACK_BYTECOUNT, 64
-      
-   // Local variable stack offsets:
-   .equ LLARGER, 8
-
-   // Parameter stack offsets:
-   .equ LLENGTH1, 16
-   .equ LLENGTH2, 24
-
-   // Local variable stack offsets for BigInt_add:
-   .equ ULCARRY, 8
-   .equ ULSUM, 16
-   .equ LINDEX, 24
-   .equ LSUMLENGTH, 32 
-
-   // Parameter stack offsets for BigInt_add:
-   .equ OADDEND1, 40
-   .equ OADDEND2, 48
-   .equ OSUM, 56
 
    // BigInt_T offsets
    .equ LLENGTH, 0
@@ -52,9 +29,12 @@ BigInt_add:
    MAX_DIGITS .req x10
    ONE .req x11
 
+   // passing parameters in
    mov OADDEND1, x0
    mov OADDEND2, x1
    mov OSUM, x2
+
+   // using registers as "enums"
    mov MAX_DIGITS, 32768
    mov ONE, 1
 
@@ -63,7 +43,6 @@ BigInt_add:
    // long lIndex;
    // long lSumLength; 
 
-   /* Determine the larger length. */
    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
    ldr x0, [OADDEND1]
    ldr x1, [OADDEND2]
@@ -89,8 +68,8 @@ endif6:
    ldr x0, [OSUM]
    cmp x0, LSUMLENGTH
    ble endif1
-   // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
+   // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
    // first parameter
    mov x0, OSUM
    add x0, x0, AULDIGIT
@@ -111,35 +90,37 @@ endif1:
    // if (lIndex >= lSumLength) goto endfor1;
    cbz LSUMLENGTH, endif4
 
-   // set c flag to zero
-   adcs x0, LINDEX, LINDEX
+   // reset c flag to zero
+   // directly modify pstate register, 
+   // setting c flag to 0
+   msr nzcv, LINDEX
 
 startfor1:
 
+   // lIndex++;
+   // do this out of order to correctly 
+   // load oAddend->aulDigits[lIndex]
+   add LINDEX, LINDEX, ONE
+
    // find oAddend1->aulDigits[lIndex];
-   add x0, OADDEND1, AULDIGIT
-   ldr x1, [x0, LINDEX, lsl 3]
+   ldr x1, [OADDEND1, LINDEX, lsl 3]
 
    // find oAddend2->aulDigits[lIndex];
-   add x0, OADDEND2, AULDIGIT
-   ldr x2, [x0, LINDEX, lsl 3]
+   ldr x2, [OADDEND2, LINDEX, lsl 3]
 
-   // adding to ulSum
+   // add to ulSum with carry flag
    adcs ULSUM, x1, x2
 
    // oSum->aulDigits[lIndex] = ulSum;
-   add x0, OSUM, AULDIGIT
-   str ULSUM, [x0, LINDEX, lsl 3]
-
-   // lIndex++;
-   add LINDEX, LINDEX, ONE
+   str ULSUM, [OSUM, LINDEX, lsl 3]
 
    // if (lIndex < lSumLength) goto startfor1
-   // use eor + cbnz instead of cmp to avoid changing 
-   // carry flag on pstate register
+   // use eor + cbnz instead of cmp to avoid 
+   // changing carry flag on pstate register
    eor x0, LINDEX, LSUMLENGTH
    cbnz x0, startfor1
 
+   // if carry flag still 1 go to endif4
    bcc endif4
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
@@ -147,7 +128,7 @@ startfor1:
    bne endif5
 
    // epilog, return FALSE;
-   eor x0, x0, x0
+   eor w0, w0, w0
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret 

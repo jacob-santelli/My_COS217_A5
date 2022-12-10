@@ -17,13 +17,12 @@
    .equ LARGER_STACK_BYTECOUNT, 32
    .equ ADD_STACK_BYTECOUNT, 64
       
-   // Local variable stack offsets:
+   // Local variable stack offsets for BigInt_larger:
    .equ LLARGER, 8
 
-   // Parameter stack offsets:
+   // Parameter stack offsets for BigInt_larger:
    .equ LLENGTH1, 16
    .equ LLENGTH2, 24
-
 
    // Local variable stack offsets for BigInt_add:
    .equ ULCARRY, 8

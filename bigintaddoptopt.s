@@ -6,8 +6,6 @@
 
    .section .text
 
-   // enum {MAX_DIGITS = 32768}; 
-   .equ MAX_DIGITS, 32768
 
    // enum {FALSE, TRUE};
    .equ FALSE, 0
@@ -24,7 +22,6 @@
    .equ LLENGTH1, 16
    .equ LLENGTH2, 24
 
-
    // Local variable stack offsets for BigInt_add:
    .equ ULCARRY, 8
    .equ ULSUM, 16
@@ -40,7 +37,6 @@
    .equ LLENGTH, 0
    .equ AULDIGIT, 8
 
-
    .global BigInt_add
 BigInt_add:
    // Prolog
@@ -53,10 +49,14 @@ BigInt_add:
    OADDEND1 .req x7
    OADDEND2 .req x8
    OSUM .req x9
+   MAX_DIGITS .req x10
+   ONE .req x11
 
    mov OADDEND1, x0
    mov OADDEND2, x1
    mov OSUM, x2
+   mov MAX_DIGITS, 32768
+   mov ONE, 1
 
    // unsigned long ulCarry;
    // unsigned long ulSum;
@@ -91,23 +91,22 @@ endif6:
    ble endif1
    // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
 
-   // first thing
+   // first parameter
    mov x0, OSUM
    add x0, x0, AULDIGIT
 
-   // second thing
-   mov w1, 0
-   // third thing
-   mov x2, MAX_DIGITS
-   lsl x2, x2, 3
+   // second parameter
+   eor w1, w1, w1
+
+   // third parameter
+   lsl x2, MAX_DIGITS, 3
 
    bl memset
 
 endif1:
 
-   /* Perform the addition. */
    // lIndex = 0
-   mov LINDEX, 0
+   eor LINDEX, LINDEX, LINDEX
 
    // if (lIndex >= lSumLength) goto endfor1;
    cbz LSUMLENGTH, endif4
@@ -133,22 +132,22 @@ startfor1:
    str ULSUM, [x0, LINDEX, lsl 3]
 
    // lIndex++;
-   add LINDEX, LINDEX, 1
+   add LINDEX, LINDEX, ONE
 
    // if (lIndex < lSumLength) goto startfor1
-   sub x0, LINDEX, LSUMLENGTH
+   // use eor + cbnz instead of cmp to avoid changing 
+   // carry flag on pstate register
+   eor x0, LINDEX, LSUMLENGTH
    cbnz x0, startfor1
 
-endfor1:
    bcc endif4
 
    // if (lSumLength != MAX_DIGITS) goto endif5;
-   mov x1, MAX_DIGITS
-   cmp LSUMLENGTH, x1
+   cmp LSUMLENGTH, MAX_DIGITS
    bne endif5
 
    // epilog, return FALSE;
-   mov x0, FALSE
+   eor x0, x0, x0
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret 
@@ -157,18 +156,17 @@ endfor1:
 endif5:
    // oSum->aulDigits[lSumLength] = 1;
    add x0, OSUM, AULDIGIT
-   mov x2, 1
-   str x2, [x0, LSUMLENGTH, lsl 3]
+   str ONE, [x0, LSUMLENGTH, lsl 3]
 
    // lSumLength++;
-   add LSUMLENGTH, LSUMLENGTH, 1
+   add LSUMLENGTH, LSUMLENGTH, ONE
 
 endif4:
    // oSum->lLength = lSumLength;
    str LSUMLENGTH, [OSUM]
 
    // epilog, return TRUE;
-   mov x0, TRUE
+   mov x0, ONE
    ldr x30, [sp]
    add sp, sp, ADD_STACK_BYTECOUNT
    ret
